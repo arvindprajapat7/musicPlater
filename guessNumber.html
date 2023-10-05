@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess A Number</title>
+    <style>
+        body{
+            background:#212121;
+            display: grid;
+            place-items: center;
+            color:#fff;
+        }
+        .main{
+            width:400px;
+            background:rgba(255,255,255,.1);
+            border-radius:10px;
+            padding:20px;
+        }
+        .playAgain{
+            display:none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="playAgain">
+            <h3>Game End</h3>
+            <button onclick="newGame()">Play Again</button>
+        </div>
+        <div class="playArea">
+            <div class="parent">
+                <div class="res"></div>
+                <h2>Guess A Number</h2>
+                <input type="text" placeholder="Enter Number"/>
+                <button class="submit" >Submit</button>
+            </div>
+            <div class="result">
+                <h5>Previous Guesses : <span id="prevGuesses"></span></h5>
+                <h5>Guesses Remaining : <span id="remainingGuesses"></span>  </h5>
+            </div>
+        </div>
+        <button id="event">Event</button>
+    </div>
+
+
+    <script>
+        let randomNumber = parseInt(Math.random()*100 +1 );
+        let guessNumber = document.querySelector('input');
+        let submit = document.querySelector('.submit');
+        let res = document.querySelector('.res');
+        let playAgain = document.querySelector('.playAgain');
+        let playArea= document.querySelector('.playArea');
+        let remainingGuesses = document.getElementById('remainingGuesses');
+        let previousGuesses = [];
+        submit.addEventListener('click', function(){
+            let val = guessNumber.value ; 
+            if(val == "" || val < 0 || val > 100 || isNaN(val)){
+                res.innerHTML = 'Enter Valid Number';
+            } else{
+                if(val == randomNumber){
+                    alert('You are the perfect Match');
+                    gameEnd();
+                    
+                }else if(val < randomNumber){
+                    res.innerHTML = 'Number is to Low';
+                }else {
+                    res.innerHTML = 'Number is to High';
+                }
+
+               guessNumber.value = '';
+               previousGuesses.push(val);
+               document.getElementById('prevGuesses').innerHTML = previousGuesses;            
+               if(previousGuesses.length > 10){
+
+                    gameEnd();
+                }
+
+                remainingGuesses.innerHTML = `${10 - previousGuesses.length }`;
+            }
+
+            
+        })
+        
+        // if(previousGuesses.length >= 10){
+        //     gameEnd();
+        // }
+        function gameEnd(){
+            previousGuesses = [];
+            console.log(previousGuesses);
+            playAgain.style.display="block"  ;
+            playArea.style.display="none";
+            
+        }
+        function newGame(){
+            playArea.style.display="block";
+            playAgain.style.display="none"  ;
+            res.innerHTML = '';
+            remainingGuesses.innerHTML = '';
+            
+
+        }
+
+        document.getElementById('event').addEventListener('click', (e)=>{
+            console.log(e);
+        })
+    </script>
+    
+</body>
+</html>
